@@ -42,7 +42,7 @@ export default function Hero() {
             One selfie. Seven signs of your skin read by AI in about twenty seconds, then a morning and evening ritual composed only for you.
           </motion.p>
           <motion.div className="ctas" {...rise(0.6)}>
-            <a className="pill light big" href="#consult">Begin your consultation</a>
+            <a className="pill light big" href="/consult">Begin your consultation</a>
             <a className="pill glass big" href="#reading">How it works</a>
           </motion.div>
         </div>

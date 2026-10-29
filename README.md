@@ -6,10 +6,18 @@ Built for the [YouCam API Skin AI & eCommerce VTO Hackathon](https://youcam-api-
 
 ## What it does
 
-1. **Consultation.** Take a selfie (front camera on phones) or upload a photo. The page resizes it in the browser to fit the API's limits (short side ≥ 480 px, long side ≤ 1600 px, JPEG).
-2. **Reading.** A serverless function uploads the photo to YouCam and runs an SD skin-analysis task for seven concerns: `moisture`, `oiliness`, `radiance`, `texture`, `pore`, `redness`, `acne`. The page polls until it finishes.
-3. **Skin portrait.** Overall score, skin age, skin type, and a score per sign. Tap a sign to overlay YouCam's detection mask on your photo and see *where* it was found.
-4. **Ritual.** Skin type picks the cleanser and finishing cream; your two weakest signs pick the morning and evening treatments; SPF is always in the morning. Each step says which score it answers.
+Maison Osùn is a small app, not a single page:
+
+| Route | What happens |
+| --- | --- |
+| `/` | The house: brand, how the reading works, botanicals, FAQ. |
+| `/consult` | The consultation. **Guided camera** uses YouCam's JS Camera Kit in skincare mode (it checks light, distance and angle, then captures on its own). Falls back to a normal selfie or upload. Photos are resized in the browser to the API's limits. |
+| `/portrait` | The skin portrait: overall score, skin age, skin type, a score per sign with change since your last reading, YouCam detection masks on your photo, a Clinical (raw score) view, the **28-day preview** (AI Skin Simulation before/after slider) and your composed ritual with add-to-bag. |
+| `/ritual` | Daily tracker: tick off morning and evening steps, a 7-day view, a streak, and the date your next portrait is due (day 28). |
+| `/journal` | Every reading saved on this device, a trend chart for the overall score or any of the seven signs, and per-reading deltas. "Load a sample history" shows the journal for judges without a camera (always labelled Sample). |
+| `/bag` | The ritual as a bag with quantities and a concept checkout (no payment). |
+
+Readings, check-offs and the bag live in `localStorage` on the device; the full-size selfie is kept only in `sessionStorage` for the 28-day preview. Nothing is stored on a server.
 
 If the API key isn't set (or you open the static preview), the site still works with a clearly labelled sample portrait.
 
@@ -21,6 +29,8 @@ If the API key isn't set (or you open the static preview), the site still works 
 | Upload photo | `PUT` to the pre-signed URL returned above |
 | Run analysis | `POST /s2s/v2.0/task/skin-analysis` (`format: "json"`, 7 SD concerns) |
 | Poll result | `GET /s2s/v2.0/task/skin-analysis/{task_id}` |
+| 28-day preview | `POST /s2s/v2.0/task/skin-simulation`, polled at `GET /s2s/v2.0/task/skin-simulation/{task_id}` |
+| Guided capture | YouCam JS Camera Kit (`faceDetectionMode: "skincare"`) |
 
 The API key never reaches the browser: all calls go through the Route Handlers in `app/api/`.
 
@@ -31,14 +41,18 @@ Next.js 14 (App Router), React 18, Framer Motion, Lenis. No database.
 ## Project layout
 
 ```
-app/page.js                 the page (hero, live phone, climate band, ingredient index, consultation with ritual + bag, FAQ)
+app/page.js                 landing (hero, reading, statement, botanicals, FAQ)
+app/consult|portrait|ritual|journal|bag/page.js   the app routes
 app/globals.css             design tokens and all styles
-app/api/analyze/route.js    upload + start task  -> { taskId }
-app/api/status/route.js     poll task            -> { status, overall, skinAge, concerns[] }
+app/api/analyze/route.js    upload + start analysis -> { taskId }
+app/api/simulate/route.js   upload + start skin simulation -> { taskId }
+app/api/status/route.js     poll either task
 app/api/health/route.js     { live: true } when the key is configured
-components/                 Hero, LivePhone, House, Consultation (the live tool), ...
-lib/data.js                 products, signs, sample portrait, photo ids
-lib/ritual.js               skin type + ritual logic
+components/                 ConsultFlow, PortraitView, RitualView, JournalView, BagView, Nav, Hero, ...
+lib/data.js                 products, signs, sample portrait + history, photo ids
+lib/ritual.js               skin type, ritual and simulation logic
+lib/store.js                on-device storage (readings, ritual checks, bag)
+lib/client.js               browser helpers: photo prep, API calls, errors
 lib/youcam.js               YouCam helpers + result normaliser
 test/proxy.test.mjs         route handlers against a mock YouCam server
 ```

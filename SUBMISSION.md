@@ -16,6 +16,9 @@ Osùn is camwood, a red heartwood families across West Africa have pressed onto 
 - A **Clinical view** toggle switches to YouCam's unadjusted raw scores, and every live result shows its YouCam task ID.
 - The house then composes a **morning and evening ritual** from its ten-product collection. Skin type picks the cleanser and finishing cream, your two weakest signs pick the treatments, and SPF is always in the morning. Every step tells you which score it answers ("Chosen for your clarity, which reads 58").
 
+- It's a full app, not a landing page: **Consultation → Portrait → Ritual → Journal → Bag**. The ritual tracker lets you tick off each step morning and night with a streak, and counts down to day 28, when you take your next portrait. The **journal** keeps every reading on your device and charts each sign over time, so you can see whether the ritual is working.
+- Capture uses YouCam's **JS Camera Kit** in skincare mode, which checks light, distance and angle and captures automatically, with a plain selfie or upload as fallback.
+
 ## How we built it
 - **YouCam Skin AI (V2 API):** `POST /file/skin-analysis` for an upload slot, a `PUT` to the pre-signed URL, `POST /task/skin-analysis` with seven SD concerns and `format: json`, then polling `GET /task/skin-analysis/{id}`.
 - **YouCam AI Skin Simulation (V2 API):** the selfie's two weakest signs become per-concern intensities (0.2–0.6, weaker skin gets a stronger but still natural change), sent to `POST /task/skin-simulation`, then polled for the result image.
@@ -28,28 +31,29 @@ Osùn is camwood, a red heartwood families across West Africa have pressed onto 
 - Making scores feel like advice, not a report card: the ritual explains its choice in one line per product.
 
 ## What's next
-- Run the analysis again after 28 days and show the change per sign.
-- Real checkout for the ritual as a bundle.
+- Accounts so the journal syncs across devices.
+- Real checkout and a 28-day refill subscription for the ritual.
+- Re-composing the ritual automatically when a new reading shows a sign has recovered.
 
 ## Built with
-YouCam Skin AI API, YouCam AI Skin Simulation API, Next.js 14, React, Framer Motion, Lenis, Vercel
+YouCam Skin AI API, YouCam AI Skin Simulation API, YouCam JS Camera Kit, Next.js 14, React, Framer Motion, Lenis, Vercel
 
 ---
 
 ## Demo video script (about 2 minutes)
 
-**0:00 – 0:15 · Hook.** Hero on screen. "Most skincare sites sell you a shelf. Maison Osùn reads your skin first."
+**0:00 – 0:12 · Hook.** Landing hero. "Most skincare sites sell you a shelf. Maison Osùn reads your skin first, then helps you keep the ritual."
 
-**0:15 – 0:30 · The house.** Scroll the House section. "Osùn is camwood, an old West African skincare tradition. We paired it with YouCam's Skin AI."
+**0:12 – 0:35 · Consultation.** On a phone, open /consult and tap *Guided camera*. "This is YouCam's Camera Kit in skincare mode: it checks my light and distance, then captures." Show the signs ticking off. "The photo goes through our server to the YouCam Skin AI API, seven concerns in one task."
 
-**0:30 – 0:55 · Consultation.** On a phone: tap *Take a selfie*, take the photo. Show the scan line and the signs ticking off. "The photo goes to YouCam's Skin AI API through our server. We start a skin-analysis task with seven concerns and poll for the result."
+**0:35 – 1:00 · Portrait.** Score, skin age, skin type. Tap *Clarity* and *Texture*: masks on the face. Flip *Clinical view*. "These are YouCam's own masks and raw scores, with the task ID underneath."
 
-**0:55 – 1:25 · Portrait.** Show score, skin age, skin type. Tap *Clarity*, then *Texture*: the masks light up on the face. "These are YouCam's detection masks, laid over your own photo."
+**1:00 – 1:20 · Day 28.** Tap *Preview my skin at day 28*, drag the slider. "A second API, AI Skin Simulation, shows my own skin after the ritual targets my two weakest signs."
 
-**1:25 – 1:45 · Ritual.** Scroll the morning and evening ritual. Read one "Chosen for your…" line. "Every product answers a specific score."
+**1:20 – 1:40 · Ritual.** Tap *Start this ritual*. Tick two morning steps; the week bar fills. "Every step says which score it answers. Day 1 of 28, and the next portrait is already booked."
 
-**1:45 – 2:10 · Day 28.** Tap *Preview my skin at day 28* and drag the slider. "A second YouCam API, AI Skin Simulation, shows your own skin after the ritual, before you buy anything."
+**1:40 – 2:00 · Journal.** Open /journal (load the sample history if needed). Switch between Hydration and Clarity on the chart. "Every reading is saved on the device, so you can see what the ritual is actually doing."
 
-**2:10 – 2:20 · Close.** "Seven signs, one selfie, a ritual made for you. Maison Osùn."
+**2:00 – 2:10 · Close.** "One selfie, a ritual made for you, and proof it's working. Maison Osùn."
 
 Remember: say "YouCam Skin AI API" out loud and show it working on a real device (both are requirements).

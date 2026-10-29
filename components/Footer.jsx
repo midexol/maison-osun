@@ -12,7 +12,7 @@ export function Closing() {
           <span className="mono">Your ritual</span>
           <h2 id="closeTitle">Your portrait is one <em>selfie away.</em></h2>
           <p>Sit by a window, take one photo, and let the house compose your morning and your night.</p>
-          <a className="pill light big" href="#consult">Read my skin</a>
+          <a className="pill light big" href="/consult">Read my skin</a>
         </Reveal>
       </div>
     </section>
@@ -28,10 +28,11 @@ export default function Footer() {
           <p>A skincare house concept built for the YouCam API Skin AI Hackathon. Skin analysis by YouCam Skin AI (Perfect Corp). Scores are cosmetic guidance, not a medical diagnosis.</p>
         </div>
         <ul>
-          <li><a href="#reading">The reading</a></li>
-          <li><a href="#house">Botanicals</a></li>
-          <li><a href="#consult">Consultation</a></li>
-          <li><a href="#faq">Questions</a></li>
+          <li><a href="/consult">Consultation</a></li>
+          <li><a href="/portrait">Portrait</a></li>
+          <li><a href="/ritual">Ritual</a></li>
+          <li><a href="/journal">Journal</a></li>
+          <li><a href="/#faq">Questions</a></li>
         </ul>
         <ul>
           <li>Photography via Unsplash</li>
