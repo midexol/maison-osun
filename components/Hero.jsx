@@ -33,11 +33,6 @@ export default function Hero() {
             <a className="btn" href="#consult">Begin your consultation</a>
             <a className="btn light" href="#how">How it works</a>
           </motion.div>
-          <motion.div className="meta" {...rise(0.38)}>
-            <div><b>1</b><span>Selfie</span></div>
-            <div><b>7</b><span>Signs read</span></div>
-            <div><b>~20s</b><span>Per reading</span></div>
-          </motion.div>
         </div>
 
         <motion.div style={{ y: yWindow }} {...rise(0.18)}>

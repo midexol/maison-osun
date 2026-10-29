@@ -16,8 +16,8 @@ Osùn is camwood, a red heartwood families across West Africa have pressed onto 
 
 ## How we built it
 - **YouCam Skin AI (V2 API):** `POST /file/skin-analysis` for an upload slot, a `PUT` to the pre-signed URL, `POST /task/skin-analysis` with seven SD concerns and `format: json`, then polling `GET /task/skin-analysis/{id}`.
-- **Serverless proxy on Vercel** so the API key never reaches the browser, with a normaliser that turns the task output into one clean shape.
-- **Frontend:** a single hand-built page (no framework) with a canvas silk-thread hero, an arched "maison doorway" frame used for every portrait, and in-browser photo resizing to meet the API's size rules before upload.
+- **Next.js Route Handlers on Vercel** so the API key never reaches the browser, with a normaliser that turns the task output into one clean shape.
+- **Frontend:** Next.js 14 (App Router) with Framer Motion and Lenis. An editorial luxury page, a live consultation that resizes photos in the browser to meet the API's size rules, and a ritual result that turns scores into products with prices and an add-to-bag step.
 - Friendly errors mapped from YouCam's codes (face too small, too dark, turned away) so a first-time user knows exactly how to retake the photo.
 
 ## Challenges
