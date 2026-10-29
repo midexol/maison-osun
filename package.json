@@ -1,0 +1,22 @@
+{
+  "name": "maison-osun",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Maison Osùn: a Lagos skincare house where YouCam Skin AI reads a selfie and composes a morning and evening ritual.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "test": "node test/proxy.test.mjs"
+  },
+  "engines": {
+    "node": ">=18.17"
+  },
+  "dependencies": {
+    "framer-motion": "^11.11.17",
+    "lenis": "^1.1.13",
+    "next": "^14.2.18",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  }
+}
