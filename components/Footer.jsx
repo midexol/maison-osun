@@ -1,38 +1,45 @@
-import ArchMark from "./ArchMark";
+import Photo from "./Photo";
 import Reveal from "./Reveal";
+import ArchMark from "./ArchMark";
 
 export function Closing() {
   return (
     <section className="closing" aria-labelledby="closeTitle">
-      <Reveal>
-        <span className="eyebrow">Maison Osùn</span>
-        <h2 id="closeTitle">Your portrait is one <em>selfie</em> away.</h2>
-        <p>Sit by a window, take one photo, and let the house compose your ritual.</p>
-        <a className="btn" href="#consult">Read my skin</a>
-      </Reveal>
+      <div className="closing-frame">
+        <Photo name="dropper" alt="A hand holding a serum dropper" label="" sizes="100vw" widths={[800, 1400, 2000]} />
+        <div className="closing-shade" />
+        <Reveal className="closing-copy">
+          <span className="mono">Your ritual</span>
+          <h2 id="closeTitle">Your portrait is one <em>selfie away.</em></h2>
+          <p>Sit by a window, take one photo, and let the house compose your morning and your night.</p>
+          <a className="pill light big" href="#consult">Read my skin</a>
+        </Reveal>
+      </div>
     </section>
   );
 }
 
 export default function Footer() {
   return (
-    <footer>
-      <ArchMark className="wm" size={600} mono />
-      <div className="wrap">
-        <div style={{ display: "grid", gap: ".8rem" }}>
-          <span className="brand"><ArchMark size={28} /><span className="word">Osùn</span></span>
-          <p style={{ maxWidth: "40ch" }}>A skincare house concept, built for the YouCam API Skin AI Hackathon. Skin analysis by YouCam Skin AI (Perfect Corp). Scores are cosmetic guidance, not a medical diagnosis.</p>
+    <footer className="footer">
+      <div className="wrap footer-grid">
+        <div>
+          <span className="brand"><ArchMark size={22} /><span className="wordmark">Osùn</span></span>
+          <p>A skincare house concept built for the YouCam API Skin AI Hackathon. Skin analysis by YouCam Skin AI (Perfect Corp). Scores are cosmetic guidance, not a medical diagnosis.</p>
         </div>
         <ul>
-          <li><a href="#how">How it works</a></li>
-          <li><a href="#house">The house</a></li>
+          <li><a href="#reading">The reading</a></li>
+          <li><a href="#house">Botanicals</a></li>
           <li><a href="#consult">Consultation</a></li>
+          <li><a href="#faq">Questions</a></li>
         </ul>
         <ul>
           <li>Photography via Unsplash</li>
+          <li>Film via MotionSites</li>
           <li>© 2026 Maison Osùn</li>
         </ul>
       </div>
+      <div className="giant-word" aria-hidden="true">Osùn</div>
     </footer>
   );
 }

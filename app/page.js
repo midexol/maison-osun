@@ -1,8 +1,7 @@
 import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
-import LivePhone from "@/components/LivePhone";
-import Marquee from "@/components/Marquee";
-import ClimateBand from "@/components/ClimateBand";
+import Reading from "@/components/Reading";
+import Statement from "@/components/Statement";
 import House from "@/components/House";
 import Consultation from "@/components/Consultation";
 import Faq from "@/components/Faq";
@@ -16,9 +15,8 @@ export default function Page() {
       <Nav />
       <main>
         <Hero />
-        <LivePhone />
-        <Marquee />
-        <ClimateBand />
+        <Reading />
+        <Statement />
         <House />
         <Consultation />
         <Faq />

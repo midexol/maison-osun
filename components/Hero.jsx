@@ -2,60 +2,64 @@
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import Photo from "./Photo";
+import VideoPlane from "./VideoPlane";
+
+const Play = () => (
+  <svg width="10" height="12" viewBox="0 0 10 12" aria-hidden="true"><path d="M0 0l10 6-10 6z" fill="currentColor" /></svg>
+);
 
 export default function Hero() {
   const ref = useRef(null);
   const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const yWindow = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : -90]);
-  const yGiant = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : 60]);
-  const ease = [0.2, 0.7, 0.2, 1];
-  const rise = (d) => (reduce ? {} : { initial: { opacity: 0, y: 26 }, animate: { opacity: 1, y: 0 }, transition: { duration: 1, ease, delay: d } });
+  const scale = useTransform(scrollYProgress, [0, 1], reduce ? [1, 1] : [1.04, 1.16]);
+  const ease = [0.16, 1, 0.3, 1];
+  const rise = (d, y = 18) => (reduce ? {} : { initial: { opacity: 0, y }, animate: { opacity: 1, y: 0 }, transition: { duration: 1, ease, delay: d } });
+  const blur = (d) => (reduce ? {} : { initial: { opacity: 0, filter: "blur(12px)", y: 16 }, animate: { opacity: 1, filter: "blur(0px)", y: 0 }, transition: { duration: 1.2, ease, delay: d } });
 
   return (
     <header className="hero" id="top" ref={ref}>
-      <div className="hero-bg" aria-hidden="true">
-        <Photo name="texture" label="" widths={[800, 1400]} priority />
-      </div>
+      <div className="hero-frame">
+        <motion.div className="hero-photo" style={{ scale }}>
+          <Photo name="hero" alt="Close portrait of natural, glowing skin" label="" sizes="100vw" widths={[800, 1400, 2000, 2600]} priority />
+        </motion.div>
+        <div className="hero-shade" />
 
-      <div className="wrap hero-grid">
-        <div>
-          <motion.span className="eyebrow" style={{ display: "block", marginBottom: "1.4rem" }} {...rise(0.05)}>
-            Maison Osùn · Est. 2026
-          </motion.span>
-          <motion.h1 {...rise(0.12)}>
-            Skin, read like a <em>portrait.</em>
+        <motion.div className="float-card" {...rise(0.6, 10)}>
+          <div className="fc-photo"><Photo name="swirls" alt="" label="" sizes="96px" widths={[200, 320]} /></div>
+          <div className="fc-body">
+            <span className="mono">Sample portrait</span>
+            <div className="fc-row"><b>76</b><span>Skin score</span></div>
+            <div className="fc-row small"><span>Hydration 70</span><span>Clarity 88</span></div>
+          </div>
+        </motion.div>
+
+        <div className="hero-copy">
+          <motion.h1 {...blur(0.15)}>
+            Skin, read like <em>a portrait.</em>
           </motion.h1>
-          <motion.p className="lede" {...rise(0.22)}>
-            Take one selfie. Our reader studies seven signs of your skin, then the house composes a morning and evening ritual made only for you.
+          <motion.p {...rise(0.45)}>
+            One selfie. Seven signs of your skin read by AI in about twenty seconds, then a morning and evening ritual composed only for you.
           </motion.p>
-          <motion.div className="ctas" {...rise(0.3)}>
-            <a className="btn" href="#consult">Begin your consultation</a>
-            <a className="btn light" href="#how">How it works</a>
+          <motion.div className="ctas" {...rise(0.6)}>
+            <a className="pill light big" href="#consult">Begin your consultation</a>
+            <a className="pill glass big" href="#reading">How it works</a>
           </motion.div>
         </div>
 
-        <motion.div style={{ y: yWindow }} {...rise(0.18)}>
-          <div className="window">
-            <div className="orbit-2" aria-hidden="true" />
-            <div className="orbit" aria-hidden="true" />
-            <div className="glass-circle">
-              <Photo name="portrait" alt="A woman applying cream to her cheek" label="Portrait" sizes="(max-width: 900px) 90vw, 470px" widths={[480, 800, 1100]} priority />
-            </div>
-            <div className="float-card score">
-              <div className="row"><span className="mini">Hydration</span><span className="mini">Sample</span></div>
-              <div className="row" style={{ marginTop: ".3rem" }}><b>70</b><span className="mini" style={{ color: "var(--warn)" }}>Steady</span></div>
-              <div className="track"><i /></div>
-            </div>
-            <span className="pill float-pill">Skin portrait ready</span>
-            <div className="float-thumb"><Photo name="camwoodSerum" alt="" label="" sizes="120px" widths={[240, 360]} /></div>
-          </div>
+        <motion.div className="hero-tiles" {...rise(0.8, 10)}>
+          <a className="tile" href="#reading" aria-label="Watch: the reading">
+            <VideoPlane name="drop" position="50% 50%" />
+            <span className="tile-play"><Play /></span>
+            <span className="tile-label">The reading</span>
+          </a>
+          <a className="tile" href="#house" aria-label="Watch: the botanicals">
+            <VideoPlane name="island" position="50% 50%" />
+            <span className="tile-play"><Play /></span>
+            <span className="tile-label">Botanicals</span>
+          </a>
         </motion.div>
       </div>
-
-      <motion.div className="wrap" style={{ y: yGiant }} aria-hidden="true">
-        <div className="giant"><span>O</span><span>S</span><span>Ù</span><span>N</span></div>
-      </motion.div>
     </header>
   );
 }
