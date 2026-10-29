@@ -2,8 +2,9 @@
 import { useEffect, useRef, useState } from "react";
 import ArchMark from "./ArchMark";
 import Photo from "./Photo";
+import BeforeAfter from "./BeforeAfter";
 import { SIGNS, ORDER, SAMPLE, PRODUCTS, PRODUCT_PHOTO } from "@/lib/data";
-import { band, compose, toScores } from "@/lib/ritual";
+import { band, compose, toScores, simulationPlan } from "@/lib/ritual";
 
 const FRIENDLY = {
   error_src_face_too_small: "Your face looks too small in the photo. Come closer so it fills most of the frame, then try again.",
@@ -50,8 +51,25 @@ async function analyzeLive(dataUrl) {
     await sleep(2500);
     const s = await fetch(`/api/status?id=${encodeURIComponent(j.taskId)}`, { cache: "no-store" });
     const sj = await s.json().catch(() => ({}));
-    if (sj.status === "success") return sj;
+    if (sj.status === "success") return { ...sj, taskId: j.taskId };
     if (sj.status === "error" || !s.ok) throw new Error(friendly(sj.code, sj.error));
+  }
+  throw new Error(FRIENDLY.timeout);
+}
+
+const SIM_LABEL = { texture: "texture", pores: "pores", redness: "redness", acne: "blemishes", radiance: "radiance", oiliness: "shine" };
+
+async function simulateLive(dataUrl, intensities) {
+  const r = await fetch("/api/simulate", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ image: dataUrl, intensities }) });
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok || !j.taskId) throw new Error(friendly(j.code, j.error || "The 28-day preview could not start. Please try again."));
+  const t0 = Date.now();
+  while (Date.now() - t0 < 120000) {
+    await sleep(2500);
+    const s = await fetch(`/api/status?kind=simulation&id=${encodeURIComponent(j.taskId)}`, { cache: "no-store" });
+    const sj = await s.json().catch(() => ({}));
+    if (sj.status === "success" && sj.url) return sj.url;
+    if (sj.status === "error" || !s.ok) throw new Error(friendly(sj.code, sj.error || "The 28-day preview could not be made for this photo."));
   }
   throw new Error(FRIENDLY.timeout);
 }
@@ -67,6 +85,8 @@ export default function Consultation() {
   const [maskOn, setMaskOn] = useState(null);
   const [barsIn, setBarsIn] = useState(false);
   const [inBag, setInBag] = useState(false);
+  const [clinical, setClinical] = useState(false);
+  const [sim, setSim] = useState({ state: "idle", url: null, err: "" });
   const portraitRef = useRef(null);
 
   useEffect(() => {
@@ -99,7 +119,7 @@ export default function Consultation() {
       setErr("The reader returned no usable scores for this photo. Please try a clearer, front-facing selfie.");
       return;
     }
-    setResult(res); setIsSample(sample); setMaskOn(null); setInBag(false); setStep(3);
+    setResult(res); setIsSample(sample); setMaskOn(null); setInBag(false); setClinical(false); setSim({ state: "idle", url: null, err: "" }); setStep(3);
   };
 
   const onFile = async (file) => {
@@ -123,6 +143,17 @@ export default function Consultation() {
   const plan = result ? compose(sc) : null;
   const ritualKeys = plan ? [...new Set([...plan.morning, ...plan.evening].map(([k]) => k))] : [];
   const total = ritualKeys.reduce((sum, k) => sum + Number(PRODUCTS[k].price.replace(/[^0-9.]/g, "")), 0);
+  const raws = {};
+  (result?.concerns || []).forEach((c) => { if (SIGNS[c.type] && c.raw != null) raws[c.type] = Math.round(c.raw); });
+  const hasRaw = Object.keys(raws).length > 1;
+  const shown = (k) => (clinical && raws[k] != null ? raws[k] : sc[k]);
+  const simPlan = result ? simulationPlan(sc) : null;
+  const canSimulate = live && !isSample && !!photo;
+  const runSim = async () => {
+    setSim({ state: "running", url: null, err: "" });
+    try { setSim({ state: "done", url: await simulateLive(photo, simPlan.intensities), err: "" }); }
+    catch (e) { setSim({ state: "error", url: null, err: e.message }); }
+  };
   const masks = {};
   (result?.concerns || []).forEach((c) => { if (c.mask) masks[c.type] = c.mask; });
 
@@ -206,21 +237,52 @@ export default function Consultation() {
               <div>
                 <ul className="concerns">
                   {ORDER.filter((k) => sc[k] != null).map((k) => {
-                    const b = band(sc[k]);
+                    const b = band(shown(k));
                     return (
                       <li key={k}>
                         <button type="button" className="concern" aria-pressed={maskOn === k} onClick={() => setMaskOn(maskOn === k ? null : k)}>
                           <span className="n">{SIGNS[k].label}<small>{SIGNS[k].sub}</small></span>
-                          <span className="s">{sc[k]}<em className={`tone-${b.tone}`}>{b.label}</em></span>
-                          <span className="bar"><i style={{ width: barsIn ? `${sc[k]}%` : 0 }} /></span>
+                          <span className="s">{shown(k)}<em className={`tone-${b.tone}`}>{b.label}</em></span>
+                          <span className="bar"><i style={{ width: barsIn ? `${shown(k)}%` : 0 }} /></span>
                         </button>
                       </li>
                     );
                   })}
                 </ul>
-                <p className="caption" style={{ marginTop: ".8rem" }}>
-                  {Object.keys(masks).length ? "Higher is healthier. Tap a sign to see where the reader found it." : "Higher is healthier. Scores run from 1 to 100."}
-                </p>
+                <div className="score-meta">
+                  <p className="caption">
+                    {clinical ? "Clinical view: YouCam's unadjusted raw scores." : Object.keys(masks).length ? "Higher is healthier. Tap a sign to see where the reader found it." : "Higher is healthier. Scores run from 1 to 100."}
+                  </p>
+                  {hasRaw && (
+                    <button type="button" className="toggle" role="switch" aria-checked={clinical} onClick={() => setClinical(!clinical)}>
+                      <span className="track"><span className="knob" /></span>Clinical view
+                    </button>
+                  )}
+                </div>
+                {result.taskId && <p className="caption provenance">Read by YouCam Skin AI · task {String(result.taskId).slice(0, 10)}…</p>}
+              </div>
+
+              <div className="sim">
+                <div className="sim-head">
+                  <span className="caption">The 28-day preview</span>
+                  <h3>Your skin, <em>after the ritual.</em></h3>
+                  <p>YouCam AI Skin Simulation applies a natural improvement to your {simPlan.targets.map((t) => SIM_LABEL[t === "pore" ? "pores" : t === "moisture" ? "radiance" : t] || SIGNS[t].label.toLowerCase()).join(" and ")}, the two signs your ritual targets.</p>
+                </div>
+                {sim.state === "done" && sim.url ? (
+                  <>
+                    <BeforeAfter before={photo} after={sim.url} />
+                    <p className="caption">Simulation, not a promise. Drag to compare.</p>
+                  </>
+                ) : canSimulate ? (
+                  <>
+                    <button className="btn" type="button" onClick={runSim} disabled={sim.state === "running"}>
+                      {sim.state === "running" ? "Composing your day 28…" : "Preview my skin at day 28"}
+                    </button>
+                    {sim.state === "error" && <div className="err" role="alert">{sim.err}</div>}
+                  </>
+                ) : (
+                  <p className="caption">Take a live reading with your own selfie to unlock the 28-day preview.</p>
+                )}
               </div>
               <div className="ritual">
                 {[["Morning", plan.morning], ["Evening", plan.evening]].map(([title, items]) => (

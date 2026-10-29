@@ -28,6 +28,7 @@
 }
 
 html, body { background: var(--bg); }
+html { overflow-x: clip; }
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
 body { margin: 0; color: var(--ink); font-family: var(--f-sans); font-size: 16px; line-height: 1.55; -webkit-font-smoothing: antialiased; overflow-x: clip; }
@@ -303,3 +304,29 @@ p { margin: 0; }
   .summary span { display: block; white-space: nowrap; font-size: .52rem; letter-spacing: .1em; }
   .flag { font-size: .58rem; }
 }
+
+/* Clinical toggle, provenance, 28-day simulation */
+.score-meta { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; margin-top: .8rem; }
+.toggle { display: inline-flex; align-items: center; gap: .55rem; background: none; border: 0; cursor: pointer; font-family: var(--f-mono); font-size: .64rem; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-60); padding: .3rem 0; }
+.toggle .track { position: relative; width: 34px; height: 20px; border-radius: 999px; background: var(--bg-2); box-shadow: inset 0 0 0 1px var(--line); transition: background .25s; }
+.toggle .knob { position: absolute; top: 3px; left: 3px; width: 14px; height: 14px; border-radius: 50%; background: var(--card); box-shadow: 0 1px 3px rgba(29,23,20,.3); transition: transform .25s var(--ease); }
+.toggle[aria-checked="true"] { color: var(--ink); }
+.toggle[aria-checked="true"] .track { background: var(--ink); }
+.toggle[aria-checked="true"] .knob { transform: translateX(14px); }
+.provenance { margin-top: .5rem; letter-spacing: .08em; }
+.sim { display: grid; gap: 1rem; padding: clamp(1rem, 2.4vw, 1.5rem); border-radius: 24px; background: linear-gradient(160deg, var(--peach), var(--blush)); }
+.sim-head { display: grid; gap: .5rem; }
+.sim-head h3 { font-size: clamp(1.6rem, 3vw, 2.2rem); }
+.sim-head p { color: var(--ink-60); max-width: 48ch; font-size: .94rem; }
+.sim .btn { justify-self: start; }
+.ba { position: relative; aspect-ratio: 3/4; max-width: 100%; border-radius: 20px; overflow: hidden; touch-action: none; user-select: none; cursor: ew-resize; background: var(--bg-2); }
+.ba img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+.ba-before { position: absolute; inset: 0; }
+.ba-tag { position: absolute; top: 12px; z-index: 2; font-family: var(--f-mono); font-size: .6rem; letter-spacing: .14em; text-transform: uppercase; color: #fff; padding: .35rem .7rem; border-radius: 999px; background: rgba(29,23,20,.35); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+.ba-tag.left { left: 12px; } .ba-tag.right { right: 12px; }
+.ba-handle { position: absolute; top: 0; bottom: 0; width: 2px; margin-left: -1px; background: #fff; z-index: 2; box-shadow: 0 0 12px rgba(0,0,0,.25); }
+.ba-handle span { position: absolute; top: 50%; left: 50%; width: 38px; height: 38px; margin: -19px 0 0 -19px; border-radius: 50%; background: #fff; box-shadow: 0 6px 18px -6px rgba(0,0,0,.45); }
+.ba-handle span::before, .ba-handle span::after { content: ""; position: absolute; top: 50%; width: 0; height: 0; border: 5px solid transparent; margin-top: -5px; }
+.ba-handle span::before { left: 7px; border-right-color: var(--ink); }
+.ba-handle span::after { right: 7px; border-left-color: var(--ink); }
+.ba-range { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: ew-resize; margin: 0; z-index: 3; }

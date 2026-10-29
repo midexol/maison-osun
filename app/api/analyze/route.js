@@ -1,6 +1,6 @@
 // POST { image: "data:image/jpeg;base64,..." } -> { taskId }
-// 1) ask YouCam for an upload slot, 2) PUT the photo there, 3) start a skin-analysis task.
-import { BASE, ACTIONS, apiKey, authHeaders, readJson, errorCode } from "../../../lib/youcam.js";
+// 1) upload slot + PUT the photo, 2) start a skin-analysis task.
+import { BASE, ACTIONS, apiKey, authHeaders, readJson, errorCode, uploadImage, decodeImage } from "../../../lib/youcam.js";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 30;
@@ -13,48 +13,17 @@ export async function POST(req) {
   if (!key) return json({ error: "YOUCAM_API_KEY is not set.", code: "missing_key" }, 500);
 
   let image;
-  try {
-    ({ image } = await req.json());
-  } catch {
-    return json({ error: "Send a JPG or PNG photo.", code: "bad_image" }, 400);
-  }
-  const m = typeof image === "string" && image.match(/^data:(image\/(?:jpeg|jpg|png));base64,(.+)$/);
-  if (!m) return json({ error: "Send a JPG or PNG photo.", code: "bad_image" }, 400);
-
-  const contentType = m[1] === "image/jpg" ? "image/jpeg" : m[1];
-  const buf = Buffer.from(m[2], "base64");
-  if (buf.length > MAX_BYTES) return json({ error: "Photo is too large.", code: "exceed_max_filesize" }, 413);
+  try { ({ image } = await req.json()); } catch { return json({ error: "Send a JPG or PNG photo.", code: "bad_image" }, 400); }
+  const img = decodeImage(image);
+  if (!img) return json({ error: "Send a JPG or PNG photo.", code: "bad_image" }, 400);
+  if (img.buf.length > MAX_BYTES) return json({ error: "Photo is too large.", code: "exceed_max_filesize" }, 413);
 
   try {
-    const fileRes = await fetch(`${BASE}/s2s/v2.0/file/skin-analysis`, {
-      method: "POST",
-      headers: authHeaders(key),
-      body: JSON.stringify({
-        files: [{ content_type: contentType, file_name: `selfie.${contentType === "image/png" ? "png" : "jpg"}`, file_size: buf.length }],
-      }),
-    });
-    const fileBody = await readJson(fileRes);
-    const file = fileBody?.data?.files?.[0];
-    const slot = file?.requests?.[0];
-    if (!fileRes.ok || !file?.file_id || !slot?.url) {
-      console.error("file api", fileRes.status, fileBody);
-      return json({ error: "Could not prepare the upload.", code: errorCode(fileBody) }, 502);
-    }
-
-    const putHeaders = {};
-    for (const [h, v] of Object.entries(slot.headers || {})) {
-      if (h.toLowerCase() !== "content-length") putHeaders[h] = String(v);
-    }
-    const put = await fetch(slot.url, { method: slot.method || "PUT", headers: putHeaders, body: buf });
-    if (!put.ok) {
-      console.error("upload", put.status, await put.text().catch(() => ""));
-      return json({ error: "Could not upload the photo.", code: "error_upload" }, 502);
-    }
-
+    const fileId = await uploadImage(key, "skin-analysis", img.buf, img.contentType);
     const taskRes = await fetch(`${BASE}/s2s/v2.0/task/skin-analysis`, {
       method: "POST",
       headers: authHeaders(key),
-      body: JSON.stringify({ src_file_id: file.file_id, dst_actions: ACTIONS, format: "json" }),
+      body: JSON.stringify({ src_file_id: fileId, dst_actions: ACTIONS, format: "json" }),
     });
     const taskBody = await readJson(taskRes);
     const taskId = taskBody?.data?.task_id;
@@ -64,7 +33,7 @@ export async function POST(req) {
     }
     return json({ taskId });
   } catch (err) {
-    console.error(err);
-    return json({ error: "The reader is unreachable right now.", code: "network" }, 500);
+    console.error(err, err.detail);
+    return json({ error: err.message || "The reader is unreachable right now.", code: err.code || "network" }, 502);
   }
 }
