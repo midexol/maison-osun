@@ -295,3 +295,11 @@ p { margin: 0; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
+
+@media (max-width: 560px) {
+  .summary div { padding: .95rem .85rem; }
+  .summary b { font-size: 2rem; }
+  .summary .type { font-size: .98rem; line-height: 1.5; padding-top: .45rem; }
+  .summary span { display: block; white-space: nowrap; font-size: .52rem; letter-spacing: .1em; }
+  .flag { font-size: .58rem; }
+}

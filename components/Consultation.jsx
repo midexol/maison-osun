@@ -170,7 +170,7 @@ export default function Consultation() {
               <input className="sr" type="file" id="fileInput" accept="image/jpeg,image/png" onChange={(e) => { const f = e.target.files?.[0]; e.target.value = ""; if (f) onFile(f); }} />
               {err && <div className="err" role="alert">{err}</div>}
               <span className={`mode ${live ? "live" : ""}`}>
-                {live === null ? "Checking the reader…" : live ? "Live reader: YouCam Skin AI" : "Preview mode: your photo gets sample scores"}
+                {live === null ? "Checking the reader…" : live ? "Live reader: YouCam Skin AI" : "Reader not connected: your photo gets sample scores"}
               </span>
             </>
           )}
@@ -196,7 +196,7 @@ export default function Consultation() {
 
           {step === 3 && plan && (
             <>
-              {isSample && <span className="flag">{live ? "Sample results" : "Sample results · live reading runs on the deployed site"}</span>}
+              {isSample && <span className="flag">{live ? "Sample results" : "Sample results · the reader is not connected"}</span>}
               <h2 id="consultTitle">Your skin <em>portrait</em></h2>
               <div className="summary">
                 <div><b>{overall}</b><span>Skin score</span></div>
