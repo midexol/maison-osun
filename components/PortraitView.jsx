@@ -81,6 +81,8 @@ export default function PortraitView() {
     setSim({ state: "running", url: null, err: "" });
     try {
       const url = await simulateLive(photo, simPlan.intensities);
+      // Keep "Composing your day 28…" until the image has actually downloaded, so the slider never shows a blank side.
+      await new Promise((res) => { const im = new Image(); im.onload = im.onerror = res; im.src = url; setTimeout(res, 20000); });
       setSim({ state: "done", url, err: "" });
       updateReading(reading.id, { simUrl: url });
     } catch (e) { setSim({ state: "error", url: null, err: e.message }); }
