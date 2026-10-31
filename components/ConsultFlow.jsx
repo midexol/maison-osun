@@ -114,25 +114,25 @@ export default function ConsultFlow() {
             <>
               <div className={`pframe ${mode === "scanning" ? "scanning" : ""}`}>
                 {photo ? <img className="photo" src={photo} alt="Your selfie" /> : (
-                  <div className="empty"><div><ArchMark size={64} /><p className="caption">Your portrait appears here</p></div></div>
+                  <div className="empty"><div><ArchMark size={64} /><p className="caption">Your photo appears here</p></div></div>
                 )}
                 <span className="scanline" />
               </div>
-              <p className="frame-note caption">{mode === "scanning" ? `Reading ${SIGNS[ORDER[scanIdx]].label.toLowerCase()}…` : ""}</p>
+              <p className="frame-note caption">{mode === "scanning" ? `Checking ${SIGNS[ORDER[scanIdx]].label.toLowerCase()}…` : ""}</p>
             </>
           )}
         </div>
 
         <div className="tool">
           <div className="steps" aria-hidden="true">
-            <span className={mode !== "scanning" ? "on" : ""}>Sit</span>
-            <span className={mode === "scanning" ? "on" : ""}>Read</span>
-            <span>Portrait</span>
+            <span className={mode !== "scanning" ? "on" : ""}>Photo</span>
+            <span className={mode === "scanning" ? "on" : ""}>Analysis</span>
+            <span>Results</span>
           </div>
 
           {mode === "scanning" ? (
             <>
-              <h1 className="app-title">Reading your <em>skin</em></h1>
+              <h1 className="app-title">Analysing your <em>skin</em></h1>
               <p className="intro">This usually takes 10 to 30 seconds. Keep this page open.</p>
               <ul className="scanlist" style={{ maxWidth: 460 }}>
                 {ORDER.map((k, i) => {
@@ -141,7 +141,7 @@ export default function ConsultFlow() {
                     <li key={k} className={s}>
                       <span className="chk">{s === "done" ? "✓" : ""}</span>
                       <span>{SIGNS[k].label}</span>
-                      <span className="ms">{s === "done" ? "seen" : s === "now" ? "reading" : ""}</span>
+                      <span className="ms">{s === "done" ? "done" : s === "now" ? "checking" : ""}</span>
                     </li>
                   );
                 })}
@@ -149,9 +149,9 @@ export default function ConsultFlow() {
             </>
           ) : (
             <>
-              <span className="mono">The consultation</span>
-              <h1 className="app-title" id="consultTitle">Sit for your <em>portrait.</em></h1>
-              <p className="intro">Face a window, bare-faced if you can. The reader studies hydration, oil balance, radiance, texture, pores, redness and blemishes.</p>
+              <span className="mono">Skin analysis</span>
+              <h1 className="app-title" id="consultTitle">Take your <em>photo.</em></h1>
+              <p className="intro">Use soft daylight and no makeup if you can. The analysis checks hydration, oil balance, radiance, texture, pores, redness and blemishes.</p>
               <ul className="guides">
                 <li><b>I</b><span>Face straight to the camera, eyes open, mouth closed.</span></li>
                 <li><b>II</b><span>Come close: your face should fill most of the frame.</span></li>
@@ -163,15 +163,15 @@ export default function ConsultFlow() {
                 <label className="btn light" htmlFor="camInput">Take a selfie</label>
                 <label className="btn light" htmlFor="fileInput">Upload a photo</label>
               </div>
-              <p className="caption">Guided camera uses YouCam Camera Kit: it checks your light, distance and angle, then captures on its own.</p>
+              <p className="caption">Guided camera uses YouCam Camera Kit. It checks your light, distance and angle, then takes the photo automatically.</p>
               <input className="sr" type="file" id="camInput" accept="image/*" capture="user" onChange={(e) => { const f = e.target.files?.[0]; e.target.value = ""; if (f) onFile(f); }} />
               <input className="sr" type="file" id="fileInput" accept="image/jpeg,image/png" onChange={(e) => { const f = e.target.files?.[0]; e.target.value = ""; if (f) onFile(f); }} />
               {err && <div className="err" role="alert">{err}</div>}
               <div className="consult-foot">
                 <span className={`mode ${live ? "live" : ""}`}>
-                  {live === null ? "Checking the reader…" : live ? "Live reader: YouCam Skin AI" : "Reader not connected: you'll see sample scores"}
+                  {live === null ? "Checking connection…" : live ? "Connected to YouCam Skin AI" : "Not connected: you will see sample scores"}
                 </span>
-                <a className="text-link" href="/portrait?sample=1">See a sample portrait</a>
+                <a className="text-link" href="/portrait?sample=1">See a sample result</a>
               </div>
             </>
           )}

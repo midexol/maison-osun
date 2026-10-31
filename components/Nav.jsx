@@ -37,7 +37,7 @@ export default function Nav() {
           <a className="icon-btn bag-btn" href="/bag" aria-label={`Bag, ${count} items`}>
             <BagIcon />{count > 0 && <span className="count">{count}</span>}
           </a>
-          {path !== "/consult" && <a className="pill dark" href="/consult">Read my skin</a>}
+          {path !== "/consult" && <a className="pill dark" href="/consult">Analyse my skin</a>}
           <button className="pill line menu-btn" type="button" aria-expanded={open} aria-controls="mobileMenu" onClick={() => setOpen(!open)}>{open ? "Close" : "Menu"}</button>
         </div>
       </div>

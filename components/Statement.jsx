@@ -19,9 +19,9 @@ export default function Statement() {
         </motion.div>
         <div className="statement-shade" />
         <div className="statement-copy">
-          <Reveal><span className="mono">Osùn means camwood</span></Reveal>
-          <Reveal delay={0.05}><h2 id="stTitle">One red heartwood. <em>Every kind of skin.</em></h2></Reveal>
-          <Reveal delay={0.12}><p>For generations, West African families have pressed camwood onto skin to calm and even it. We kept that patience and added a reader that meets your skin wherever you live.</p></Reveal>
+          <Reveal><span className="mono">About the name</span></Reveal>
+          <Reveal delay={0.05}><h2 id="stTitle">Osùn is the Yoruba word for <em>camwood.</em></h2></Reveal>
+          <Reveal delay={0.12}><p>Camwood is a red wood that people in West Africa have used on their skin for generations to calm it and even out its tone. Maison Osùn is built for every skin type, anywhere in the world.</p></Reveal>
           <Reveal delay={0.18}><ul className="cities">{CITIES.map((c) => <li key={c}>{c}</li>)}</ul></Reveal>
         </div>
       </div>

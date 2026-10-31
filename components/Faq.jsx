@@ -6,8 +6,8 @@ export default function Faq() {
     <section className="faq" id="faq" aria-labelledby="faqTitle">
       <div className="wrap faq-grid">
         <Reveal>
-          <span className="eyebrow">At the counter</span>
-          <h2 id="faqTitle">Questions, <em>answered.</em></h2>
+          <span className="eyebrow">FAQ</span>
+          <h2 id="faqTitle">Common <em>questions.</em></h2>
         </Reveal>
         <Reveal delay={0.08}>
           {FAQ.map((f, i) => (

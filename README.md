@@ -62,7 +62,7 @@ Good skincare used to be personal: someone looked closely at your skin and hande
 | 🗺️ | **Where it was found** | Tap any sign to lay YouCam's detection mask over your own photo. |
 | 🔬 | **Clinical view** | One switch shows YouCam's unadjusted `raw_score` instead of the display score. Every live reading shows its YouCam task ID. |
 | ✨ | **Day 28 preview** | **YouCam AI Skin Simulation** applies a natural improvement to your two weakest signs, on your own selfie, as a before/after slider. |
-| 🧴 | **A ritual with reasons** | Morning and evening steps from a ten-product collection. Every product says which score it answers: *"Chosen for your pores, which reads 69."* |
+| 🧴 | **A ritual with reasons** | Morning and evening steps from a ten-product collection. Every product says which score it answers: *"For your pores score (69)."* |
 | ✅ | **Ritual tracker** | Tick off each step, keep a streak, and count down to your next portrait on day 28. |
 | 📈 | **Journal** | Every reading is saved on your device, with a trend chart for any sign over time. |
 | 🛍️ | **Bag** | The whole ritual in one tap, with a concept checkout (no payment taken). |
@@ -139,7 +139,7 @@ npm test                              # both APIs end to end against a mock YouC
 
 Get a key from the [YouCam API console](https://yce.perfectcorp.com/api-console/en/api-keys/). Without one, the app still runs with clearly labelled sample results.
 
-**Deploy on Vercel:** import the repo, add `YOUCAM_API_KEY` under *Settings → Environment Variables*, and deploy. `/consult` shows **Live reader: YouCam Skin AI** when the key is active.
+**Deploy on Vercel:** import the repo, add `YOUCAM_API_KEY` under *Settings → Environment Variables*, and deploy. `/consult` shows **Connected to YouCam Skin AI** when the key is active.
 
 <br/>
 

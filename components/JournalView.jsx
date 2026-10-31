@@ -60,10 +60,10 @@ export default function JournalView() {
         <div className="wrap narrow">
           <ArchMark size={56} />
           <span className="mono">Journal</span>
-          <h1 className="app-title">Every portrait, <em>kept.</em></h1>
-          <p className="intro">Each reading is saved on this device, so you can watch your seven signs change month by month. Nothing is stored on our servers.</p>
+          <h1 className="app-title">Your results <em>over time.</em></h1>
+          <p className="intro">Each result is saved on this device, so you can see how your scores change month by month. Nothing is stored on our servers.</p>
           <div className="actions">
-            <a className="btn" href="/consult">Take your first reading</a>
+            <a className="btn" href="/consult">Take your first analysis</a>
             <button className="btn light" type="button" onClick={loadSample}>Load a sample history</button>
           </div>
         </div>
@@ -85,9 +85,9 @@ export default function JournalView() {
       <div className="wrap">
         <header className="page-head">
           <div>
-            <span className="mono">{readings.length} {readings.length === 1 ? "portrait" : "portraits"} · since {fmtDate(first.at, { month: "long", year: "numeric" })}</span>
-            <h1 className="app-title" id="journalTitle">The <em>journal.</em></h1>
-            <p className="intro">Every reading, saved on this device. Choose a sign to follow it over time.</p>
+            <span className="mono">{readings.length} {readings.length === 1 ? "result" : "results"} · since {fmtDate(first.at, { month: "long", year: "numeric" })}</span>
+            <h1 className="app-title" id="journalTitle">Your <em>journal.</em></h1>
+            <p className="intro">Every result is saved on this device. Pick a score to see how it changed over time.</p>
           </div>
           {change != null && (
             <div className="stat-row">
@@ -98,7 +98,7 @@ export default function JournalView() {
         </header>
 
         {hasSample && (
-          <p className="flag-line"><span className="flag">Includes sample readings</span><button className="text-link" type="button" onClick={clearSample}>Remove samples</button></p>
+          <p className="flag-line"><span className="flag">Includes sample results</span><button className="text-link" type="button" onClick={clearSample}>Remove samples</button></p>
         )}
 
         <div className="chart-card">
@@ -108,7 +108,7 @@ export default function JournalView() {
             ))}
           </div>
           {points.length ? <Trend points={points} /> : <p className="caption">No scores for this sign yet.</p>}
-          {points.length === 1 && <p className="caption">Your trend line appears after your second portrait.</p>}
+          {points.length === 1 && <p className="caption">The chart shows a line after your second result.</p>}
         </div>
 
         <ol className="entries">
@@ -123,7 +123,7 @@ export default function JournalView() {
                   <span className="entry-thumb">{r.thumb ? <img src={r.thumb} alt="" /> : <ArchMark size={26} />}</span>
                   <span className="entry-date">
                     <b>{fmtDate(r.at, { day: "numeric", month: "long", year: "numeric" })}</b>
-                    <span className="caption">{r.sample ? "Sample reading" : "YouCam Skin AI"}{weakest ? ` · focus: ${SIGNS[weakest].label.toLowerCase()}` : ""}</span>
+                    <span className="caption">{r.sample ? "Sample result" : "YouCam Skin AI"}{weakest ? ` · lowest: ${SIGNS[weakest].label.toLowerCase()}` : ""}</span>
                   </span>
                   <span className="entry-score">
                     <b>{o ?? "–"}</b>
@@ -136,7 +136,7 @@ export default function JournalView() {
                     <button type="button" className="text-link" onClick={() => setConfirm(null)}>Keep</button>
                   </span>
                 ) : (
-                  <button type="button" className="text-link entry-del" onClick={() => setConfirm(r.id)} aria-label={`Delete reading from ${fmtDate(r.at)}`}>Remove</button>
+                  <button type="button" className="text-link entry-del" onClick={() => setConfirm(r.id)} aria-label={`Delete result from ${fmtDate(r.at)}`}>Remove</button>
                 )}
               </li>
             );
@@ -144,7 +144,7 @@ export default function JournalView() {
         </ol>
 
         <div className="actions journal-actions">
-          <a className="btn" href="/consult">Add a new portrait</a>
+          <a className="btn" href="/consult">Add a new result</a>
           {!hasSample && <button className="btn light" type="button" onClick={loadSample}>Load a sample history</button>}
         </div>
       </div>

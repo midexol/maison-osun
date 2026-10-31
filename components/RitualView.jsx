@@ -30,10 +30,10 @@ export default function RitualView() {
         <div className="wrap narrow">
           <ArchMark size={56} />
           <span className="mono">Ritual</span>
-          <h1 className="app-title">Your ritual starts with <em>a portrait.</em></h1>
-          <p className="intro">Once your skin is read, your morning and evening steps appear here to tick off each day.</p>
+          <h1 className="app-title">No ritual <em>yet.</em></h1>
+          <p className="intro">Take a skin analysis and your morning and evening steps will show here, ready to tick off each day.</p>
           <div className="actions">
-            <a className="btn" href="/consult">Begin your consultation</a>
+            <a className="btn" href="/consult">Start skin analysis</a>
             <a className="btn light" href="/portrait?sample=1">Try the sample ritual</a>
           </div>
         </div>
@@ -69,14 +69,14 @@ export default function RitualView() {
       <div className="wrap">
         <header className="page-head">
           <div>
-            <span className="mono">{reading.sample ? "Sample ritual" : `From your portrait of ${fmtDate(reading.at, { day: "numeric", month: "long" })}`}</span>
+            <span className="mono">{reading.sample ? "Sample ritual" : `Based on your results from ${fmtDate(reading.at, { day: "numeric", month: "long" })}`}</span>
             <h1 className="app-title" id="ritualTitle">Day {dayN} <em>of 28.</em></h1>
-            <p className="intro">{plan.type} skin. Tick each step as you go; your streak and next portrait are tracked on this device.</p>
+            <p className="intro">Skin type: {plan.type}. Tick off each step when you do it. Your progress is saved on this device.</p>
           </div>
           <div className="stat-row">
             <div><b>{p.done}<small>/{p.total}</small></b><span>Steps today</span></div>
             <div><b>{streak}</b><span>Day streak</span></div>
-            <div><b>{left}</b><span>{left ? "Days to next portrait" : "Portrait due"}</span></div>
+            <div><b>{left}</b><span>{left ? "Days until next check" : "Next check due"}</span></div>
           </div>
         </header>
 
@@ -125,12 +125,12 @@ export default function RitualView() {
 
         <div className="next-portrait">
           <div>
-            <span className="mono">Next portrait</span>
-            <h3>{left ? <>Due {fmtDate(due, { weekday: "long", day: "numeric", month: "long" })}.</> : <>Ready when you are.</>}</h3>
-            <p>Skin renews in roughly 28 days. Take your next selfie in the same light, and the journal will show what changed in each of your seven signs.</p>
+            <span className="mono">Next skin check</span>
+            <h3>{left ? <>Due {fmtDate(due, { weekday: "long", day: "numeric", month: "long" })}.</> : <>You can take it now.</>}</h3>
+            <p>Skin renews about every 28 days. Take your next photo in the same light so you can compare your scores in the journal.</p>
           </div>
           <div className="actions">
-            <a className="btn" href="/consult">{left ? "Read my skin early" : "Read my skin now"}</a>
+            <a className="btn" href="/consult">{left ? "Check my skin now" : "Check my skin now"}</a>
             <a className="btn light" href="/journal">Open the journal</a>
           </div>
         </div>

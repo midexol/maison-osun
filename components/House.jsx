@@ -14,8 +14,8 @@ export default function House() {
     <section className="house" id="house" aria-labelledby="houseTitle">
       <div className="wrap">
         <Reveal className="sec-head">
-          <span className="mono">The botanicals</span>
-          <h2 id="houseTitle">Six botanicals, <em>four continents.</em></h2>
+          <span className="mono">Ingredients</span>
+          <h2 id="houseTitle">Six key <em>ingredients.</em></h2>
         </Reveal>
         <div className="index">
           <Reveal className="stage">

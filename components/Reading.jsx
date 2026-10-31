@@ -11,9 +11,9 @@ const lowest = ORDER.slice().sort((a, b) => scores[a] - scores[b])[0];
 const plan = compose(scores);
 
 const STEPS = [
-  ["01", "Read", "Sit by a window and take one selfie. YouCam Skin AI scores seven signs from 1 to 100."],
-  ["02", "Map", "Tap a sign and its detection map lights up on your own face, so you know where, not just how much."],
-  ["03", "Prescribe", "Your two weakest signs choose the treatments. Every product says which score it answers."],
+  ["01", "Take a selfie", "Take one photo in good light. YouCam Skin AI scores seven areas of your skin from 1 to 100."],
+  ["02", "See where", "Tap any score to see the part of your face it came from."],
+  ["03", "Get a routine", "Your two lowest scores decide which treatments you get. Each product shows the score it is for."],
 ];
 
 export default function Reading() {
@@ -24,8 +24,8 @@ export default function Reading() {
     <section className="reading" id="reading" aria-labelledby="readingTitle">
       <div className="wrap reading-grid">
         <div>
-          <Reveal><span className="mono">The reading</span></Reveal>
-          <Reveal delay={0.05}><h2 id="readingTitle">A mirror that <em>answers back.</em></h2></Reveal>
+          <Reveal><span className="mono">Three steps</span></Reveal>
+          <Reveal delay={0.05}><h2 id="readingTitle">How it <em>works.</em></h2></Reveal>
           <ol className="steps-list">
             {STEPS.map(([n, t, d], i) => (
               <Reveal as="li" key={n} delay={0.1 + i * 0.08}>
@@ -41,7 +41,7 @@ export default function Reading() {
           <div className="phone" ref={ref}>
             <div className="screen">
               <div className="notch" />
-              <div className="screen-top"><span>Your portrait</span><span className="mono">Sample</span></div>
+              <div className="screen-top"><span>Your results</span><span className="mono">Sample</span></div>
               <div className="screen-figure">
                 <Photo name="hero" alt="" label="" sizes="300px" widths={[400, 700]} />
                 <span className="scanbar" />
@@ -67,14 +67,14 @@ export default function Reading() {
                 ))}
               </ul>
               <div className="screen-rx">
-                <span className="mono">Tonight</span>
+                <span className="mono">Evening</span>
                 <b>{plan.evening[1][1].replace("Chosen for your ", "For your ")}</b>
               </div>
             </div>
           </div>
         </Reveal>
       </div>
-      <p className="caption center wrap" style={{ marginTop: "1.4rem" }}>Sample scores from YouCam&apos;s reference portrait</p>
+      <p className="caption center wrap" style={{ marginTop: "1.4rem" }}>Sample scores from YouCam&apos;s reference photo</p>
     </section>
   );
 }

@@ -50,11 +50,11 @@ export default function PortraitView() {
         <div className="wrap narrow">
           <ArchMark size={56} />
           <span className="mono">Portrait</span>
-          <h1 className="app-title">No portrait <em>yet.</em></h1>
-          <p className="intro">Sit for a consultation and your skin portrait, ritual and 28-day preview will live here.</p>
+          <h1 className="app-title">No results <em>yet.</em></h1>
+          <p className="intro">Take a skin analysis and your results, routine and 28-day preview will show here.</p>
           <div className="actions">
-            <a className="btn" href="/consult">Begin your consultation</a>
-            <a className="btn light" href="/portrait?sample=1">See a sample portrait</a>
+            <a className="btn" href="/consult">Start skin analysis</a>
+            <a className="btn light" href="/portrait?sample=1">See a sample result</a>
           </div>
         </div>
       </section>
@@ -81,7 +81,7 @@ export default function PortraitView() {
     setSim({ state: "running", url: null, err: "" });
     try {
       const url = await simulateLive(photo, simPlan.intensities);
-      // Keep "Composing your day 28…" until the image has actually downloaded, so the slider never shows a blank side.
+      // Keep "Creating your preview…" until the image has actually downloaded, so the slider never shows a blank side.
       await new Promise((res) => { const im = new Image(); im.onload = im.onerror = res; im.src = url; setTimeout(res, 20000); });
       setSim({ state: "done", url, err: "" });
       updateReading(reading.id, { simUrl: url });
@@ -104,13 +104,13 @@ export default function PortraitView() {
               : <Photo name="closeup" alt="Sample portrait" sizes="(max-width: 900px) 100vw, 45vw" />}
             {maskOn && masks[maskOn] && <img className="mask on" src={masks[maskOn]} alt="" />}
           </div>
-          <p className="frame-note caption">{maskOn && masks[maskOn] ? `${SIGNS[maskOn].label} map` : reading.sample ? "Sample portrait" : fmtDate(reading.at)}</p>
+          <p className="frame-note caption">{maskOn && masks[maskOn] ? `${SIGNS[maskOn].label} map` : reading.sample ? "Sample photo" : fmtDate(reading.at)}</p>
         </div>
 
         <div className="tool">
           {reading.sample && <span className="flag">Sample results</span>}
-          <span className="mono">{reading.sample ? "Reference reading" : `Read ${fmtDate(reading.at)}`}</span>
-          <h1 className="app-title" id="portraitTitle">Your skin <em>portrait</em></h1>
+          <span className="mono">{reading.sample ? "Sample data" : `Analysed ${fmtDate(reading.at)}`}</span>
+          <h1 className="app-title" id="portraitTitle">Your skin <em>results</em></h1>
           <div className="summary">
             <div><b>{overall}</b><span>Skin score{prev?.overall != null && <Delta d={overall - Math.round(prev.overall)} />}</span></div>
             <div><b>{reading.skinAge != null ? Math.round(reading.skinAge) : "–"}</b><span>Skin age</span></div>
@@ -134,7 +134,7 @@ export default function PortraitView() {
             </ul>
             <div className="score-meta">
               <p className="caption">
-                {clinical ? "Clinical view: YouCam's unadjusted raw scores." : Object.keys(masks).length ? "Higher is healthier. Tap a sign to see where the reader found it." : prev ? "Higher is healthier. Changes compare with your previous reading." : "Higher is healthier. Scores run from 1 to 100."}
+                {clinical ? "Clinical view: YouCam's raw scores, before adjustment." : Object.keys(masks).length ? "Higher is better. Tap a score to see where it was found on your face." : prev ? "Higher is better. Changes are compared with your last result." : "Higher is better. Scores go from 1 to 100."}
               </p>
               {hasRaw && (
                 <button type="button" className="toggle" role="switch" aria-checked={clinical} onClick={() => setClinical(!clinical)}>
@@ -148,23 +148,23 @@ export default function PortraitView() {
           <div className="sim">
             <div className="sim-head">
               <span className="caption">The 28-day preview</span>
-              <h3>Your skin, <em>after the ritual.</em></h3>
-              <p>YouCam AI Skin Simulation applies a natural improvement to your {simPlan.targets.map((t) => SIM_LABEL[t] || SIGNS[t].label.toLowerCase()).join(" and ")}, the two signs your ritual targets.</p>
+              <h3>Your skin <em>after 28 days.</em></h3>
+              <p>YouCam AI Skin Simulation shows how your {simPlan.targets.map((t) => SIM_LABEL[t] || SIGNS[t].label.toLowerCase()).join(" and ")} could look after 28 days of this routine. These are your two lowest scores.</p>
             </div>
             {sim.state === "done" && sim.url && photo ? (
               <>
                 <BeforeAfter before={photo} after={sim.url} />
-                <p className="caption">Simulation, not a promise. Drag to compare.</p>
+                <p className="caption">This is a simulation, not a guarantee. Drag to compare.</p>
               </>
             ) : canSimulate ? (
               <>
                 <button className="btn" type="button" onClick={runSim} disabled={sim.state === "running"}>
-                  {sim.state === "running" ? "Composing your day 28…" : "Preview my skin at day 28"}
+                  {sim.state === "running" ? "Creating your preview…" : "Preview my skin at day 28"}
                 </button>
                 {sim.state === "error" && <div className="err" role="alert">{sim.err}</div>}
               </>
             ) : (
-              <p className="caption">{reading.sample ? "Take a live reading with your own selfie to unlock the 28-day preview." : "Your photo stays on this device only for the session it was taken in. Take a new reading to make a preview."}</p>
+              <p className="caption">{reading.sample ? "Analyse your own selfie to see the 28-day preview." : "Your photo is only kept during the visit it was taken in. Take a new photo to create a preview."}</p>
             )}
           </div>
 
@@ -201,7 +201,7 @@ export default function PortraitView() {
           </div>
           <div className="actions">
             <button className="btn light" type="button" onClick={startRitual}>Start this ritual</button>
-            <a className="btn light" href="/consult">Read another portrait</a>
+            <a className="btn light" href="/consult">Analyse another photo</a>
           </div>
         </div>
       </div>

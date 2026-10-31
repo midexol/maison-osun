@@ -21,11 +21,11 @@ export default function BagView() {
         <div className="wrap narrow">
           <ArchMark size={56} />
           <span className="mono">Order {placed}</span>
-          <h1 className="app-title">Your ritual is <em>on its way.</em></h1>
-          <p className="intro">This is a concept checkout: no payment was taken and nothing will ship. Your ritual tracker is ready for day one.</p>
+          <h1 className="app-title">Order <em>placed.</em></h1>
+          <p className="intro">This is a demo checkout. No payment was taken and nothing will be shipped. Your ritual tracker is ready.</p>
           <div className="actions">
             <a className="btn" href="/ritual">Open my ritual</a>
-            <a className="btn light" href="/">Back to the house</a>
+            <a className="btn light" href="/">Back to home</a>
           </div>
         </div>
       </section>
@@ -39,10 +39,10 @@ export default function BagView() {
           <ArchMark size={56} />
           <span className="mono">Bag</span>
           <h1 className="app-title">Your bag is <em>empty.</em></h1>
-          <p className="intro">Your ritual is composed from your skin portrait. Read your skin and add the whole ritual in one tap.</p>
+          <p className="intro">Products are recommended from your skin results. Analyse your skin, then add the whole ritual in one tap.</p>
           <div className="actions">
-            <a className="btn" href="/consult">Read my skin</a>
-            <a className="btn light" href="/portrait">My portrait</a>
+            <a className="btn" href="/consult">Analyse my skin</a>
+            <a className="btn light" href="/portrait">My results</a>
           </div>
         </div>
       </section>
@@ -90,7 +90,7 @@ export default function BagView() {
             <div className="total"><dt>Total</dt><dd>${subtotal + (subtotal >= 120 ? 0 : 8)}</dd></div>
           </dl>
           <button className="btn" type="button" onClick={() => { setBag([]); setPlaced("MO-" + Math.random().toString(36).slice(2, 7).toUpperCase()); }}>Place order</button>
-          <p className="caption">Concept checkout. No payment is taken in this demo.</p>
+          <p className="caption">Demo checkout. No payment is taken.</p>
         </aside>
       </div>
     </section>

@@ -1,9 +1,9 @@
 import "./globals.css";
 
 export const metadata = {
-  title: "Maison Osùn · Skin, read like a portrait",
+  title: "Maison Osùn · Skin analysis from one selfie",
   description:
-    "A skincare house for every skin. One selfie, seven signs read by YouCam Skin AI, and a morning and evening ritual made only for you.",
+    "Take one selfie. YouCam Skin AI scores seven areas of your skin and Maison Osùn recommends a morning and evening routine.",
 };
 
 export const viewport = {

@@ -9,10 +9,10 @@ export function Closing() {
         <Photo name="dropper" alt="A hand holding a serum dropper" label="" sizes="100vw" widths={[800, 1400, 2000]} />
         <div className="closing-shade" />
         <Reveal className="closing-copy">
-          <span className="mono">Your ritual</span>
-          <h2 id="closeTitle">Your portrait is one <em>selfie away.</em></h2>
-          <p>Sit by a window, take one photo, and let the house compose your morning and your night.</p>
-          <a className="pill light big" href="/consult">Read my skin</a>
+          <span className="mono">Get started</span>
+          <h2 id="closeTitle">Check your skin <em>in about a minute.</em></h2>
+          <p>Take one selfie in good light. You get your scores and a morning and evening routine.</p>
+          <a className="pill light big" href="/consult">Analyse my skin</a>
         </Reveal>
       </div>
     </section>
@@ -25,7 +25,7 @@ export default function Footer() {
       <div className="wrap footer-grid">
         <div>
           <span className="brand"><ArchMark size={22} /><span className="wordmark">Osùn</span></span>
-          <p>A skincare house concept built for the YouCam API Skin AI Hackathon. Skin analysis by YouCam Skin AI (Perfect Corp). Scores are cosmetic guidance, not a medical diagnosis.</p>
+          <p>A concept skincare brand built for the YouCam API Skin AI Hackathon. Skin analysis by YouCam Skin AI (Perfect Corp). Scores are for cosmetic guidance only, not a medical diagnosis.</p>
         </div>
         <ul>
           <li><a href="/consult">Consultation</a></li>
