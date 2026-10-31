@@ -110,7 +110,10 @@ p { margin: 0; }
 .hero-tiles { position: absolute; z-index: 2; right: 22px; bottom: 22px; display: grid; gap: 10px; }
 .tile { position: relative; display: block; width: 132px; aspect-ratio: 1.1; border-radius: 18px; overflow: hidden; box-shadow: 0 14px 30px -14px rgba(0,0,0,.5), inset 0 0 0 1px rgba(255,255,255,.4); }
 .tile .vplane { border-radius: inherit; }
-.tile-play { position: absolute; z-index: 2; top: 50%; left: 50%; transform: translate(-50%, -78%); width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; padding-left: 2px; color: var(--ink); background: rgba(255,253,250,.9); }
+.tile img, .tile .ph-fallback { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--ease); }
+.tile:hover img { transform: scale(1.06); }
+.tile-shade { position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, rgba(0,0,0,0) 45%, rgba(0,0,0,.45)); }
+.tile-play { position: absolute; z-index: 2; transform: none; top: 8px; left: auto; right: 8px; width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; color: var(--ink); background: rgba(255,253,250,.9); }
 .tile-label { position: absolute; z-index: 2; left: 10px; bottom: 8px; font-size: .72rem; color: #fff; font-weight: 500; text-shadow: 0 1px 8px rgba(0,0,0,.5); }
 @media (max-width: 760px) {
   .hero-frame { height: calc(100svh - 96px); min-height: 600px; }

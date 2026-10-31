@@ -2,10 +2,9 @@
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import Photo from "./Photo";
-import VideoPlane from "./VideoPlane";
 
-const Play = () => (
-  <svg width="10" height="12" viewBox="0 0 10 12" aria-hidden="true"><path d="M0 0l10 6-10 6z" fill="currentColor" /></svg>
+const Arrow = () => (
+  <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 9L9 3M4 3h5v5" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /></svg>
 );
 
 export default function Hero() {
@@ -49,13 +48,15 @@ export default function Hero() {
 
         <motion.div className="hero-tiles" {...rise(0.8, 10)}>
           <a className="tile" href="#reading" aria-label="How it works">
-            <VideoPlane name="drop" position="50% 50%" />
-            <span className="tile-play"><Play /></span>
+            <Photo name="portrait" alt="" label="" sizes="140px" widths={[280, 420]} />
+            <span className="tile-shade" />
+            <span className="tile-play"><Arrow /></span>
             <span className="tile-label">How it works</span>
           </a>
           <a className="tile" href="#house" aria-label="Ingredients">
-            <VideoPlane name="island" position="50% 50%" />
-            <span className="tile-play"><Play /></span>
+            <Photo name="texture" alt="" label="" sizes="140px" widths={[280, 420]} />
+            <span className="tile-shade" />
+            <span className="tile-play"><Arrow /></span>
             <span className="tile-label">Ingredients</span>
           </a>
         </motion.div>
